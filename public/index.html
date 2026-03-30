@@ -4,214 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LG 트윈스 티켓 오픈 알리미</title>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --lg-red: #C8102E;
-    --radius: 12px;
-    --radius-sm: 8px;
-  }
+  :root { --lg-red: #C8102E; }
   body {
     font-family: 'Noto Sans KR', sans-serif;
-    background: #f5f5f5;
+    background: #fff;
     min-height: 100vh;
-    padding: 24px 16px;
     color: #1a1a1a;
   }
-  .container { max-width: 480px; margin: 0 auto; }
 
-  .header {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 20px;
+  .top-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 3px solid #1a1a1a;
   }
   .lg-badge {
     background: var(--lg-red); color: #fff;
     font-family: 'Black Han Sans', sans-serif;
-    font-size: 24px; padding: 6px 14px;
-    border-radius: 6px; letter-spacing: -1px;
+    font-size: 20px; padding: 4px 10px;
+    border-radius: 4px; letter-spacing: -1px;
   }
-  .header-text h1 { font-size: 17px; font-weight: 700; line-height: 1.2; }
-  .header-text p { font-size: 12px; color: #666; margin-top: 2px; }
+  .top-bar h1 { font-size: 15px; font-weight: 700; }
+  .top-bar p { font-size: 11px; color: #999; margin-left: auto; }
 
-  .games-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-
-  .game-card {
-    background: #fff;
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid #e8e8e8;
+  .game-row {
+    display: flex; align-items: center;
+    padding: 20px; gap: 16px;
+    border-bottom: 1px solid #eee;
   }
-  .card-top { display: flex; align-items: stretch; }
-  .date-block {
-    background: var(--lg-red); color: #fff;
-    padding: 14px 16px; min-width: 72px;
-    text-align: center; flex-shrink: 0;
-    display: flex; flex-direction: column; justify-content: center;
-  }
-  .date-block .day { font-size: 24px; font-weight: 700; line-height: 1; }
-  .date-block .dow { font-size: 11px; opacity: 0.85; margin-top: 2px; }
-  .date-block .time { font-size: 11px; opacity: 0.85; margin-top: 1px; }
-  .match-info { flex: 1; padding: 12px 14px; }
-  .teams { font-size: 14px; font-weight: 500; }
-  .venue { font-size: 12px; color: #888; margin-top: 2px; }
-  .open-info { padding: 12px 14px; border-left: 1px solid #f0f0f0; text-align: right; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; }
-  .open-label { font-size: 10px; color: #999; }
-  .open-date { font-size: 13px; font-weight: 500; margin-top: 2px; }
-
-  .countdown-bar {
-    border-top: 1px solid #f0f0f0;
-    padding: 10px 14px;
-    display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  }
-  .countdown-label { font-size: 11px; color: #999; }
-  .countdown-time { font-size: 15px; font-weight: 700; color: var(--lg-red); letter-spacing: 0.5px; }
-  .countdown-time.open { color: #1a7a3c; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .countdown-time.soon { animation: pulse 1s infinite; }
-
-  .alarm-btn {
-    font-size: 12px; font-weight: 500;
-    background: var(--lg-red); color: #fff;
-    border: none; padding: 6px 14px;
-    border-radius: 20px; cursor: pointer;
-    white-space: nowrap; transition: opacity 0.2s;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  .alarm-btn:hover { opacity: 0.85; }
-  .alarm-btn.set {
-    background: #f0f0f0; color: #888;
-    border: 1px solid #ddd;
+  .game-row.past {
+    opacity: 0.35;
   }
 
-  .section {
-    background: #fff; border-radius: var(--radius);
-    padding: 16px; margin-bottom: 12px;
-    border: 1px solid #e8e8e8;
+  .date-col {
+    flex-shrink: 0; min-width: 80px;
   }
-  .section h2 { font-size: 14px; font-weight: 500; margin-bottom: 14px; }
-
-  .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
-  .tab {
-    font-size: 12px; padding: 5px 14px;
-    border-radius: 20px; cursor: pointer;
-    border: 1px solid #ddd; background: transparent;
-    color: #888; font-family: 'Noto Sans KR', sans-serif;
-    transition: all 0.15s;
+  .date-num {
+    font-size: 32px; font-weight: 300; letter-spacing: -1px; line-height: 1;
   }
-  .tab.active { background: var(--lg-red); color: #fff; border-color: var(--lg-red); }
-
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  .field { margin-bottom: 10px; }
-  .field label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
-  .field input {
-    width: 100%; padding: 9px 12px;
-    border: 1px solid #ddd; border-radius: var(--radius-sm);
-    font-size: 14px; font-family: 'Noto Sans KR', sans-serif;
-    outline: none; transition: border-color 0.15s;
+  .date-sub {
+    font-size: 12px; color: #888; margin-top: 2px;
   }
-  .field input:focus { border-color: var(--lg-red); }
-  .field-hint { font-size: 11px; color: #999; margin-top: 3px; }
-  .field-hint.ok { color: #1a7a3c; }
-  .field-hint.err { color: #a32d2d; }
 
-  .btn-row { display: flex; gap: 8px; margin-top: 14px; }
-  .btn-primary {
-    flex: 1; padding: 10px;
-    background: var(--lg-red); color: #fff;
-    border: none; border-radius: var(--radius-sm);
+  .teams-col {
+    flex: 1; min-width: 0;
+  }
+  .teams-vs {
     font-size: 14px; font-weight: 500;
-    cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+  }
+  .teams-vs .vs { color: #ccc; margin: 0 6px; font-weight: 400; }
+  .teams-venue {
+    font-size: 12px; color: #aaa; margin-top: 2px;
+  }
+
+  .action-col {
+    flex-shrink: 0; text-align: center;
+  }
+  .btn-buy {
+    display: inline-block;
+    background: var(--lg-red); color: #fff;
+    font-size: 14px; font-weight: 500;
+    padding: 10px 24px; border-radius: 6px;
+    text-decoration: none; white-space: nowrap;
     transition: opacity 0.2s;
   }
-  .btn-primary:hover { opacity: 0.85; }
-  .btn-secondary {
-    padding: 10px 16px; background: transparent;
-    border: 1px solid #ddd; border-radius: var(--radius-sm);
-    font-size: 14px; color: #666; cursor: pointer;
-    font-family: 'Noto Sans KR', sans-serif;
-    transition: background 0.15s;
+  .btn-buy:hover { opacity: 0.85; }
+  .open-schedule {
+    font-size: 13px; color: #555;
+    padding: 10px 16px;
+    border: 1px solid #ddd; border-radius: 6px;
+    white-space: nowrap; line-height: 1.4;
+    text-align: center;
   }
-  .btn-secondary:hover { background: #f5f5f5; }
-
-  .status-msg {
-    margin-top: 10px; font-size: 13px;
-    padding: 8px 12px; border-radius: var(--radius-sm);
-    display: none;
+  .open-schedule .date { font-weight: 500; }
+  .past-label {
+    font-size: 13px; color: #bbb;
   }
-  .status-msg.ok { background: #eaf6ee; color: #1a6e35; display: block; }
-  .status-msg.err { background: #fceaea; color: #a32d2d; display: block; }
 
-  .notif-status { font-size: 13px; color: #666; padding: 4px 0; margin-bottom: 10px; }
-  .notif-status.ok { color: #1a6e35; }
-  .notif-status.err { color: #a32d2d; }
-
-  .hint-box {
-    background: #fafafa; border-radius: var(--radius-sm);
-    padding: 10px 12px; font-size: 12px; color: #666;
-    line-height: 1.8; margin-top: 12px;
-    border: 1px solid #f0f0f0;
+  .info-bar {
+    display: flex; gap: 16px; padding: 12px 20px;
+    background: #fafafa; border-bottom: 1px solid #eee;
+    font-size: 12px; color: #888;
   }
-  .hint-box a { color: var(--lg-red); text-decoration: none; }
+  .info-bar span { display: flex; align-items: center; gap: 4px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.red { background: var(--lg-red); }
+  .dot.green { background: #1a7a3c; }
+  .dot.gray { background: #ccc; }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <div class="header">
-    <div class="lg-badge">LG</div>
-    <div class="header-text">
-      <h1>TWINS 티켓 오픈 알리미</h1>
-      <p>판매 시작 10분 전에 알려드려요</p>
-    </div>
-  </div>
-
-  <div class="games-list" id="gamesList"></div>
-
-  <div class="section">
-    <h2>알림 방법 설정</h2>
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('browser')">브라우저 알림</button>
-      <button class="tab" onclick="switchTab('telegram')">텔레그램</button>
-    </div>
-
-    <div class="tab-content active" id="tab-browser">
-      <div class="notif-status" id="notifStatus">확인 중...</div>
-      <button class="btn-primary" id="notifBtn" onclick="requestNotif()" style="display:none;">알림 권한 허용하기</button>
-      <div class="hint-box">이 페이지를 열어두면 오픈 10분 전에 자동으로 팝업이 나타납니다.</div>
-    </div>
-
-    <div class="tab-content" id="tab-telegram">
-      <div class="field">
-        <label>봇 토큰</label>
-        <input type="text" id="tgToken" placeholder="예: 8754324237:AAFfCKFA..."
-          oninput="cleanAndValidate('tgToken','tokenHint','token')"
-          onpaste="handlePaste(event,'tgToken','tokenHint','token')" />
-        <div class="field-hint" id="tokenHint"></div>
-      </div>
-      <div class="field">
-        <label>Chat ID</label>
-        <input type="text" id="tgChatId" placeholder="예: 1858148024"
-          oninput="cleanAndValidate('tgChatId','chatHint','chatid')"
-          onpaste="handlePaste(event,'tgChatId','chatHint','chatid')" />
-        <div class="field-hint" id="chatHint"></div>
-      </div>
-      <div class="btn-row">
-        <button class="btn-primary" onclick="saveTelegram()">저장</button>
-        <button class="btn-secondary" onclick="testTelegram()">테스트 전송</button>
-      </div>
-      <div class="status-msg" id="tgStatus"></div>
-      <div class="hint-box">
-        1. <a href="https://t.me/BotFather" target="_blank">@BotFather</a>에서 봇 생성 → 토큰 복사<br>
-        2. 봇에게 아무 메시지 전송<br>
-        3. <a href="https://api.telegram.org" target="_blank">api.telegram.org</a>/bot토큰/getUpdates 에서 chat.id 확인
-      </div>
-    </div>
-  </div>
-
+<div class="top-bar">
+  <div class="lg-badge">LG</div>
+  <h1>TWINS 홈경기 티켓 알리미</h1>
+  <p>2026 시즌</p>
 </div>
+
+<div class="info-bar">
+  <span><i class="dot red"></i> 예매 오픈 전</span>
+  <span><i class="dot green"></i> 예매 중</span>
+  <span><i class="dot gray"></i> 경기 종료</span>
+</div>
+
+<div id="gamesList"></div>
 
 <script>
 const games = [
@@ -286,221 +184,58 @@ const games = [
   { date: '2026-09-06', day: '6', dow: '일', time: '17:00', away: '삼성 라이온즈', openDate: '2026-08-30T11:00:00' },
 ];
 
-const alarmSet = {};
-const alarmTimers = {};
-
-function fmtCountdown(ms) {
-  if (ms <= 0) return '판매 중!';
-  const s = Math.floor(ms / 1000);
-  const d = Math.floor(s / 86400);
-  const h = Math.floor((s % 86400) / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sec = s % 60;
-  if (d > 0) return d + '일 ' + h + '시간 ' + m + '분';
-  if (h > 0) return h + '시간 ' + m + '분 ' + sec + '초';
-  return m + '분 ' + sec + '초';
+function getStatus(g, now) {
+  if (now > new Date(g.date + 'T23:59:59').getTime()) return 'past';
+  if (now >= new Date(g.openDate).getTime()) return 'on-sale';
+  return 'upcoming';
 }
 
-function renderGames() {
+function fmtOpenDate(g) {
+  const d = new Date(g.openDate);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  const dows = ['일','월','화','수','목','금','토'];
+  const dow = dows[d.getDay()];
+  return `${d.getFullYear()}.${mm}.${dd}(${dow})<br>11:00 오픈예정`;
+}
+
+function render() {
   const list = document.getElementById('gamesList');
   list.innerHTML = '';
-  games.forEach((g, i) => {
-    const md = g.openDate.substring(5, 10).replace('-', '/');
-    const card = document.createElement('div');
-    card.className = 'game-card';
-    card.innerHTML = `
-      <div class="card-top">
-        <div class="date-block">
-          <div class="day">${g.day}</div>
-          <div class="dow">${g.dow}요일</div>
-          <div class="time">${g.time}</div>
-        </div>
-        <div class="match-info">
-          <div class="teams">${g.away} vs LG 트윈스</div>
-          <div class="venue">잠실야구장</div>
-        </div>
-        <div class="open-info">
-          <div class="open-label">판매 오픈</div>
-          <div class="open-date">${md} 11:00</div>
-        </div>
-      </div>
-      <div class="countdown-bar">
-        <div>
-          <div class="countdown-label">오픈까지</div>
-          <div class="countdown-time" id="cd${i}">계산 중...</div>
-        </div>
-        <button class="alarm-btn" id="ab${i}" onclick="toggleAlarm(${i})">알림 설정</button>
-      </div>
-    `;
-    list.appendChild(card);
-  });
-}
-
-function updateCountdowns() {
   const now = Date.now();
-  games.forEach((g, i) => {
-    const openTs = new Date(g.openDate).getTime();
-    const ms = openTs - now;
-    const el = document.getElementById('cd' + i);
-    if (!el) return;
-    const txt = fmtCountdown(ms);
-    el.textContent = txt;
-    el.className = 'countdown-time' + (ms <= 0 ? ' open' : ms <= 600000 ? ' soon' : '');
-    if (alarmSet[i] && ms > 0 && ms <= 600000 && !alarmTimers['fired' + i]) {
-      alarmTimers['fired' + i] = true;
-      fireAlarm(g, i);
+
+  games.forEach(g => {
+    const status = getStatus(g, now);
+    const mm = g.date.substring(5, 7);
+    const dd = g.date.substring(8, 10);
+
+    let actionHtml = '';
+    if (status === 'on-sale') {
+      actionHtml = `<a class="btn-buy" href="https://www.ticketlink.co.kr/sports/137/59" target="_blank">예매하기</a>`;
+    } else if (status === 'upcoming') {
+      actionHtml = `<div class="open-schedule">${fmtOpenDate(g)}</div>`;
+    } else {
+      actionHtml = `<span class="past-label">경기 종료</span>`;
     }
+
+    const row = document.createElement('div');
+    row.className = 'game-row' + (status === 'past' ? ' past' : '');
+    row.innerHTML = `
+      <div class="date-col">
+        <div class="date-num">${mm}.${dd}</div>
+        <div class="date-sub">(${g.dow}) ${g.time}</div>
+      </div>
+      <div class="teams-col">
+        <div class="teams-vs">${g.away}<span class="vs">vs</span>LG 트윈스</div>
+        <div class="teams-venue">잠실야구장</div>
+      </div>
+      <div class="action-col">${actionHtml}</div>
+    `;
+    list.appendChild(row);
   });
 }
 
-function toggleAlarm(i) {
-  alarmSet[i] = !alarmSet[i];
-  const btn = document.getElementById('ab' + i);
-  if (alarmSet[i]) {
-    btn.textContent = '알림 설정됨';
-    btn.classList.add('set');
-    scheduleAlarm(i);
-  } else {
-    btn.textContent = '알림 설정';
-    btn.classList.remove('set');
-    if (alarmTimers[i]) { clearTimeout(alarmTimers[i]); delete alarmTimers[i]; }
-  }
-}
-
-function scheduleAlarm(i) {
-  const g = games[i];
-  const alertTs = new Date(g.openDate).getTime() - 10 * 60 * 1000;
-  const delay = alertTs - Date.now();
-  if (delay > 0) alarmTimers[i] = setTimeout(() => fireAlarm(g, i), delay);
-  else if (delay > -600000) fireAlarm(g, i);
-}
-
-function fireAlarm(g, i) {
-  const msg = 'LG 트윈스 vs ' + g.away + ' (' + g.date + ') 티켓이 10분 후 오픈됩니다!';
-  if ('Notification' in window && Notification.permission === 'granted') {
-    new Notification('TWINS 티켓 오픈 10분 전!', { body: msg });
-  }
-  const token = localStorage.getItem('tgToken') || '';
-  const chatId = localStorage.getItem('tgChatId') || '';
-  if (token && chatId) sendTG(token, chatId, msg, null, null);
-}
-
-function requestNotif() {
-  Notification.requestPermission().then(updateNotifStatus);
-}
-
-function updateNotifStatus() {
-  const el = document.getElementById('notifStatus');
-  const btn = document.getElementById('notifBtn');
-  if (!('Notification' in window)) {
-    el.textContent = '이 브라우저는 알림을 지원하지 않아요.';
-    el.className = 'notif-status err';
-  } else if (Notification.permission === 'granted') {
-    el.textContent = '알림이 허용되어 있어요. 각 경기 카드에서 알림 설정을 눌러주세요.';
-    el.className = 'notif-status ok';
-    btn.style.display = 'none';
-  } else if (Notification.permission === 'denied') {
-    el.textContent = '알림이 차단되어 있어요. 브라우저 설정에서 허용해주세요.';
-    el.className = 'notif-status err';
-    btn.style.display = 'none';
-  } else {
-    el.textContent = '알림 권한을 허용하면 오픈 10분 전에 팝업이 나타납니다.';
-    el.className = 'notif-status';
-    btn.style.display = '';
-  }
-}
-
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((b, i) => {
-    b.classList.toggle('active', ['browser','telegram'][i] === name);
-  });
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-}
-
-function cleanVal(v) { return v.replace(/\s/g, ''); }
-
-function handlePaste(e, inputId, hintId, type) {
-  e.preventDefault();
-  const raw = (e.clipboardData || window.clipboardData).getData('text');
-  const cleaned = cleanVal(raw);
-  document.getElementById(inputId).value = cleaned;
-  showHint(hintId, cleaned, type);
-}
-
-function cleanAndValidate(inputId, hintId, type) {
-  const el = document.getElementById(inputId);
-  const cleaned = cleanVal(el.value);
-  if (cleaned !== el.value) el.value = cleaned;
-  showHint(hintId, cleaned, type);
-}
-
-function showHint(hintId, v, type) {
-  const el = document.getElementById(hintId);
-  if (!v) { el.textContent = ''; el.className = 'field-hint'; return; }
-  if (type === 'token') {
-    const ok = /^\d+:[A-Za-z0-9_-]+$/.test(v);
-    el.textContent = ok ? '형식 확인' : '올바른 형식: 숫자:영문숫자';
-    el.className = 'field-hint ' + (ok ? 'ok' : 'err');
-  } else {
-    const ok = /^-?\d+$/.test(v);
-    el.textContent = ok ? '형식 확인' : '숫자만 입력해주세요';
-    el.className = 'field-hint ' + (ok ? 'ok' : 'err');
-  }
-}
-
-function getInputVals() {
-  return {
-    token: cleanVal(document.getElementById('tgToken').value),
-    chatId: cleanVal(document.getElementById('tgChatId').value)
-  };
-}
-
-function showTgStatus(msg, ok) {
-  const el = document.getElementById('tgStatus');
-  el.textContent = msg;
-  el.className = 'status-msg ' + (ok ? 'ok' : 'err');
-}
-
-function sendTG(token, chatId, text, onOk, onErr) {
-  fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({chat_id: chatId, text: text})
-  })
-  .then(r => r.json())
-  .then(d => { if (d.ok && onOk) onOk(); else if (!d.ok && onErr) onErr(); })
-  .catch(() => { if (onErr) onErr(); });
-}
-
-function saveTelegram() {
-  const {token, chatId} = getInputVals();
-  if (!token || !chatId) { showTgStatus('토큰과 Chat ID를 모두 입력해주세요.', false); return; }
-  localStorage.setItem('tgToken', token);
-  localStorage.setItem('tgChatId', chatId);
-  showTgStatus('저장 완료! 테스트 전송으로 확인해보세요.', true);
-}
-
-function testTelegram() {
-  const {token, chatId} = getInputVals();
-  if (!token || !chatId) { showTgStatus('토큰과 Chat ID를 입력 후 테스트해주세요.', false); return; }
-  showTgStatus('전송 중...', true);
-  sendTG(token, chatId,
-    'LG 트윈스 티켓 알리미 연결 완료! 티켓 오픈 10분 전에 알려드릴게요. TWINS 파이팅!',
-    () => showTgStatus('전송 성공! 텔레그램을 확인해보세요.', true),
-    () => showTgStatus('전송 실패. 토큰 또는 Chat ID를 다시 확인해주세요.', false)
-  );
-}
-
-const savedToken = localStorage.getItem('tgToken') || '';
-const savedChatId = localStorage.getItem('tgChatId') || '';
-if (savedToken) { document.getElementById('tgToken').value = savedToken; showHint('tokenHint', savedToken, 'token'); }
-if (savedChatId) { document.getElementById('tgChatId').value = savedChatId; showHint('chatHint', savedChatId, 'chatid'); }
-
-renderGames();
-updateNotifStatus();
-setInterval(updateCountdowns, 1000);
-updateCountdowns();
+render();
 </script>
 </body>
 </html>
