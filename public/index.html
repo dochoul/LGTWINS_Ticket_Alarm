@@ -7,7 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root { --lg-red: #C8102E; --radius: 12px; --radius-sm: 8px; }
+  :root {
+    --lg-red: #C8102E;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
   body {
     font-family: 'Noto Sans KR', sans-serif;
     background: #f5f5f5;
@@ -17,7 +21,10 @@
   }
   .container { max-width: 480px; margin: 0 auto; }
 
-  .header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+  }
   .lg-badge {
     background: var(--lg-red); color: #fff;
     font-family: 'Black Han Sans', sans-serif;
@@ -28,7 +35,13 @@
   .header-text p { font-size: 12px; color: #666; margin-top: 2px; }
 
   .games-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .game-card { background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid #e8e8e8; }
+
+  .game-card {
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid #e8e8e8;
+  }
   .card-top { display: flex; align-items: stretch; }
   .date-block {
     background: var(--lg-red); color: #fff;
@@ -42,15 +55,13 @@
   .match-info { flex: 1; padding: 12px 14px; }
   .teams { font-size: 14px; font-weight: 500; }
   .venue { font-size: 12px; color: #888; margin-top: 2px; }
-  .open-info {
-    padding: 12px 14px; border-left: 1px solid #f0f0f0;
-    text-align: right; flex-shrink: 0;
-    display: flex; flex-direction: column; justify-content: center;
-  }
+  .open-info { padding: 12px 14px; border-left: 1px solid #f0f0f0; text-align: right; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; }
   .open-label { font-size: 10px; color: #999; }
   .open-date { font-size: 13px; font-weight: 500; margin-top: 2px; }
+
   .countdown-bar {
-    border-top: 1px solid #f0f0f0; padding: 10px 14px;
+    border-top: 1px solid #f0f0f0;
+    padding: 10px 14px;
     display: flex; align-items: center; justify-content: space-between; gap: 8px;
   }
   .countdown-label { font-size: 11px; color: #999; }
@@ -59,47 +70,91 @@
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
   .countdown-time.soon { animation: pulse 1s infinite; }
 
-  .ticket-link {
+  .alarm-btn {
     font-size: 12px; font-weight: 500;
     background: var(--lg-red); color: #fff;
-    padding: 6px 14px; border-radius: 20px;
-    text-decoration: none; white-space: nowrap;
-    transition: opacity 0.2s;
+    border: none; padding: 6px 14px;
+    border-radius: 20px; cursor: pointer;
+    white-space: nowrap; transition: opacity 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
   }
-  .ticket-link:hover { opacity: 0.85; }
+  .alarm-btn:hover { opacity: 0.85; }
+  .alarm-btn.set {
+    background: #f0f0f0; color: #888;
+    border: 1px solid #ddd;
+  }
 
   .section {
     background: #fff; border-radius: var(--radius);
     padding: 16px; margin-bottom: 12px;
     border: 1px solid #e8e8e8;
   }
-  .section h2 { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+  .section h2 { font-size: 14px; font-weight: 500; margin-bottom: 14px; }
 
-  .info-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px;
+  .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .tab {
+    font-size: 12px; padding: 5px 14px;
+    border-radius: 20px; cursor: pointer;
+    border: 1px solid #ddd; background: transparent;
+    color: #888; font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.15s;
   }
-  .info-row:last-child { border-bottom: none; }
-  .info-label { color: #888; }
-  .info-value { font-weight: 500; }
-  .badge {
-    font-size: 11px; padding: 3px 10px;
-    border-radius: 20px; font-weight: 500;
+  .tab.active { background: var(--lg-red); color: #fff; border-color: var(--lg-red); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .field { margin-bottom: 10px; }
+  .field label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
+  .field input {
+    width: 100%; padding: 9px 12px;
+    border: 1px solid #ddd; border-radius: var(--radius-sm);
+    font-size: 14px; font-family: 'Noto Sans KR', sans-serif;
+    outline: none; transition: border-color 0.15s;
   }
-  .badge-green { background: #eaf6ee; color: #1a6e35; }
-  .badge-gray { background: #f0f0f0; color: #888; }
+  .field input:focus { border-color: var(--lg-red); }
+  .field-hint { font-size: 11px; color: #999; margin-top: 3px; }
+  .field-hint.ok { color: #1a7a3c; }
+  .field-hint.err { color: #a32d2d; }
+
+  .btn-row { display: flex; gap: 8px; margin-top: 14px; }
+  .btn-primary {
+    flex: 1; padding: 10px;
+    background: var(--lg-red); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary {
+    padding: 10px 16px; background: transparent;
+    border: 1px solid #ddd; border-radius: var(--radius-sm);
+    font-size: 14px; color: #666; cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: #f5f5f5; }
+
+  .status-msg {
+    margin-top: 10px; font-size: 13px;
+    padding: 8px 12px; border-radius: var(--radius-sm);
+    display: none;
+  }
+  .status-msg.ok { background: #eaf6ee; color: #1a6e35; display: block; }
+  .status-msg.err { background: #fceaea; color: #a32d2d; display: block; }
+
+  .notif-status { font-size: 13px; color: #666; padding: 4px 0; margin-bottom: 10px; }
+  .notif-status.ok { color: #1a6e35; }
+  .notif-status.err { color: #a32d2d; }
 
   .hint-box {
     background: #fafafa; border-radius: var(--radius-sm);
-    padding: 12px; font-size: 12px; color: #666;
-    line-height: 1.8; border: 1px solid #f0f0f0; margin-top: 12px;
+    padding: 10px 12px; font-size: 12px; color: #666;
+    line-height: 1.8; margin-top: 12px;
+    border: 1px solid #f0f0f0;
   }
-  .hint-box strong { color: #1a1a1a; }
-  .hint-box code {
-    background: #f0f0f0; padding: 1px 5px;
-    border-radius: 4px; font-size: 11px;
-    font-family: monospace;
-  }
+  .hint-box a { color: var(--lg-red); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -109,36 +164,50 @@
     <div class="lg-badge">LG</div>
     <div class="header-text">
       <h1>TWINS 티켓 오픈 알리미</h1>
-      <p>판매 시작 10분 전 텔레그램 자동 알림</p>
+      <p>판매 시작 10분 전에 알려드려요</p>
     </div>
   </div>
 
   <div class="games-list" id="gamesList"></div>
 
   <div class="section">
-    <h2>서버 알림 상태</h2>
-    <div class="info-row">
-      <span class="info-label">알림 방식</span>
-      <span class="badge badge-green">Vercel 서버리스 크론잡</span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">실행 주기</span>
-      <span class="info-value">매분 자동 체크</span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">알림 시점</span>
-      <span class="info-value">오픈 10분 전</span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">브라우저 필요 여부</span>
-      <span class="badge badge-green">불필요</span>
+    <h2>알림 방법 설정</h2>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('browser')">브라우저 알림</button>
+      <button class="tab" onclick="switchTab('telegram')">텔레그램</button>
     </div>
 
-    <div class="hint-box">
-      <strong>환경변수 설정 필요 (Vercel Dashboard)</strong><br>
-      <code>TELEGRAM_TOKEN</code> — 봇 토큰<br>
-      <code>TELEGRAM_CHAT_ID</code> — Chat ID (<code>1858148024</code>)<br>
-      <code>CRON_SECRET</code> — 아무 랜덤 문자열 (보안용)
+    <div class="tab-content active" id="tab-browser">
+      <div class="notif-status" id="notifStatus">확인 중...</div>
+      <button class="btn-primary" id="notifBtn" onclick="requestNotif()" style="display:none;">알림 권한 허용하기</button>
+      <div class="hint-box">이 페이지를 열어두면 오픈 10분 전에 자동으로 팝업이 나타납니다.</div>
+    </div>
+
+    <div class="tab-content" id="tab-telegram">
+      <div class="field">
+        <label>봇 토큰</label>
+        <input type="text" id="tgToken" placeholder="예: 8754324237:AAFfCKFA..."
+          oninput="cleanAndValidate('tgToken','tokenHint','token')"
+          onpaste="handlePaste(event,'tgToken','tokenHint','token')" />
+        <div class="field-hint" id="tokenHint"></div>
+      </div>
+      <div class="field">
+        <label>Chat ID</label>
+        <input type="text" id="tgChatId" placeholder="예: 1858148024"
+          oninput="cleanAndValidate('tgChatId','chatHint','chatid')"
+          onpaste="handlePaste(event,'tgChatId','chatHint','chatid')" />
+        <div class="field-hint" id="chatHint"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="saveTelegram()">저장</button>
+        <button class="btn-secondary" onclick="testTelegram()">테스트 전송</button>
+      </div>
+      <div class="status-msg" id="tgStatus"></div>
+      <div class="hint-box">
+        1. <a href="https://t.me/BotFather" target="_blank">@BotFather</a>에서 봇 생성 → 토큰 복사<br>
+        2. 봇에게 아무 메시지 전송<br>
+        3. <a href="https://api.telegram.org" target="_blank">api.telegram.org</a>/bot토큰/getUpdates 에서 chat.id 확인
+      </div>
     </div>
   </div>
 
@@ -146,10 +215,13 @@
 
 <script>
 const games = [
-  { day: '10', dow: '금', time: '18:30', away: 'SSG 랜더스', openAt: '2026-04-03T11:00:00+09:00', openLabel: '04/03 11:00' },
-  { day: '11', dow: '토', time: '17:00', away: 'SSG 랜더스', openAt: '2026-04-04T11:00:00+09:00', openLabel: '04/04 11:00' },
-  { day: '12', dow: '일', time: '14:00', away: 'SSG 랜더스', openAt: '2026-04-05T11:00:00+09:00', openLabel: '04/05 11:00' },
+  { date: '2026-04-10', day: '10', dow: '금', time: '18:30', away: 'SSG 랜더스', openDate: '2026-04-03T11:00:00' },
+  { date: '2026-04-11', day: '11', dow: '토', time: '17:00', away: 'SSG 랜더스', openDate: '2026-04-04T11:00:00' },
+  { date: '2026-04-12', day: '12', dow: '일', time: '14:00', away: 'SSG 랜더스', openDate: '2026-04-05T11:00:00' },
 ];
+
+const alarmSet = {};
+const alarmTimers = {};
 
 function fmtCountdown(ms) {
   if (ms <= 0) return '판매 중!';
@@ -165,7 +237,9 @@ function fmtCountdown(ms) {
 
 function renderGames() {
   const list = document.getElementById('gamesList');
+  list.innerHTML = '';
   games.forEach((g, i) => {
+    const md = g.openDate.substring(5, 10).replace('-', '/');
     const card = document.createElement('div');
     card.className = 'game-card';
     card.innerHTML = `
@@ -181,7 +255,7 @@ function renderGames() {
         </div>
         <div class="open-info">
           <div class="open-label">판매 오픈</div>
-          <div class="open-date">${g.openLabel}</div>
+          <div class="open-date">${md} 11:00</div>
         </div>
       </div>
       <div class="countdown-bar">
@@ -189,7 +263,7 @@ function renderGames() {
           <div class="countdown-label">오픈까지</div>
           <div class="countdown-time" id="cd${i}">계산 중...</div>
         </div>
-        <a class="ticket-link" href="https://www.ticketlink.co.kr/sports/137/59" target="_blank">티켓 예매</a>
+        <button class="alarm-btn" id="ab${i}" onclick="toggleAlarm(${i})">알림 설정</button>
       </div>
     `;
     list.appendChild(card);
@@ -199,15 +273,166 @@ function renderGames() {
 function updateCountdowns() {
   const now = Date.now();
   games.forEach((g, i) => {
-    const ms = new Date(g.openAt).getTime() - now;
+    const openTs = new Date(g.openDate).getTime();
+    const ms = openTs - now;
     const el = document.getElementById('cd' + i);
     if (!el) return;
-    el.textContent = fmtCountdown(ms);
+    const txt = fmtCountdown(ms);
+    el.textContent = txt;
     el.className = 'countdown-time' + (ms <= 0 ? ' open' : ms <= 600000 ? ' soon' : '');
+    if (alarmSet[i] && ms > 0 && ms <= 600000 && !alarmTimers['fired' + i]) {
+      alarmTimers['fired' + i] = true;
+      fireAlarm(g, i);
+    }
   });
 }
 
+function toggleAlarm(i) {
+  alarmSet[i] = !alarmSet[i];
+  const btn = document.getElementById('ab' + i);
+  if (alarmSet[i]) {
+    btn.textContent = '알림 설정됨';
+    btn.classList.add('set');
+    scheduleAlarm(i);
+  } else {
+    btn.textContent = '알림 설정';
+    btn.classList.remove('set');
+    if (alarmTimers[i]) { clearTimeout(alarmTimers[i]); delete alarmTimers[i]; }
+  }
+}
+
+function scheduleAlarm(i) {
+  const g = games[i];
+  const alertTs = new Date(g.openDate).getTime() - 10 * 60 * 1000;
+  const delay = alertTs - Date.now();
+  if (delay > 0) alarmTimers[i] = setTimeout(() => fireAlarm(g, i), delay);
+  else if (delay > -600000) fireAlarm(g, i);
+}
+
+function fireAlarm(g, i) {
+  const msg = 'LG 트윈스 vs ' + g.away + ' (' + g.date + ') 티켓이 10분 후 오픈됩니다!';
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('TWINS 티켓 오픈 10분 전!', { body: msg });
+  }
+  const token = localStorage.getItem('tgToken') || '';
+  const chatId = localStorage.getItem('tgChatId') || '';
+  if (token && chatId) sendTG(token, chatId, msg, null, null);
+}
+
+function requestNotif() {
+  Notification.requestPermission().then(updateNotifStatus);
+}
+
+function updateNotifStatus() {
+  const el = document.getElementById('notifStatus');
+  const btn = document.getElementById('notifBtn');
+  if (!('Notification' in window)) {
+    el.textContent = '이 브라우저는 알림을 지원하지 않아요.';
+    el.className = 'notif-status err';
+  } else if (Notification.permission === 'granted') {
+    el.textContent = '알림이 허용되어 있어요. 각 경기 카드에서 알림 설정을 눌러주세요.';
+    el.className = 'notif-status ok';
+    btn.style.display = 'none';
+  } else if (Notification.permission === 'denied') {
+    el.textContent = '알림이 차단되어 있어요. 브라우저 설정에서 허용해주세요.';
+    el.className = 'notif-status err';
+    btn.style.display = 'none';
+  } else {
+    el.textContent = '알림 권한을 허용하면 오픈 10분 전에 팝업이 나타납니다.';
+    el.className = 'notif-status';
+    btn.style.display = '';
+  }
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((b, i) => {
+    b.classList.toggle('active', ['browser','telegram'][i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function cleanVal(v) { return v.replace(/\s/g, ''); }
+
+function handlePaste(e, inputId, hintId, type) {
+  e.preventDefault();
+  const raw = (e.clipboardData || window.clipboardData).getData('text');
+  const cleaned = cleanVal(raw);
+  document.getElementById(inputId).value = cleaned;
+  showHint(hintId, cleaned, type);
+}
+
+function cleanAndValidate(inputId, hintId, type) {
+  const el = document.getElementById(inputId);
+  const cleaned = cleanVal(el.value);
+  if (cleaned !== el.value) el.value = cleaned;
+  showHint(hintId, cleaned, type);
+}
+
+function showHint(hintId, v, type) {
+  const el = document.getElementById(hintId);
+  if (!v) { el.textContent = ''; el.className = 'field-hint'; return; }
+  if (type === 'token') {
+    const ok = /^\d+:[A-Za-z0-9_-]+$/.test(v);
+    el.textContent = ok ? '형식 확인' : '올바른 형식: 숫자:영문숫자';
+    el.className = 'field-hint ' + (ok ? 'ok' : 'err');
+  } else {
+    const ok = /^-?\d+$/.test(v);
+    el.textContent = ok ? '형식 확인' : '숫자만 입력해주세요';
+    el.className = 'field-hint ' + (ok ? 'ok' : 'err');
+  }
+}
+
+function getInputVals() {
+  return {
+    token: cleanVal(document.getElementById('tgToken').value),
+    chatId: cleanVal(document.getElementById('tgChatId').value)
+  };
+}
+
+function showTgStatus(msg, ok) {
+  const el = document.getElementById('tgStatus');
+  el.textContent = msg;
+  el.className = 'status-msg ' + (ok ? 'ok' : 'err');
+}
+
+function sendTG(token, chatId, text, onOk, onErr) {
+  fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({chat_id: chatId, text: text})
+  })
+  .then(r => r.json())
+  .then(d => { if (d.ok && onOk) onOk(); else if (!d.ok && onErr) onErr(); })
+  .catch(() => { if (onErr) onErr(); });
+}
+
+function saveTelegram() {
+  const {token, chatId} = getInputVals();
+  if (!token || !chatId) { showTgStatus('토큰과 Chat ID를 모두 입력해주세요.', false); return; }
+  localStorage.setItem('tgToken', token);
+  localStorage.setItem('tgChatId', chatId);
+  showTgStatus('저장 완료! 테스트 전송으로 확인해보세요.', true);
+}
+
+function testTelegram() {
+  const {token, chatId} = getInputVals();
+  if (!token || !chatId) { showTgStatus('토큰과 Chat ID를 입력 후 테스트해주세요.', false); return; }
+  showTgStatus('전송 중...', true);
+  sendTG(token, chatId,
+    'LG 트윈스 티켓 알리미 연결 완료! 티켓 오픈 10분 전에 알려드릴게요. TWINS 파이팅!',
+    () => showTgStatus('전송 성공! 텔레그램을 확인해보세요.', true),
+    () => showTgStatus('전송 실패. 토큰 또는 Chat ID를 다시 확인해주세요.', false)
+  );
+}
+
+const savedToken = localStorage.getItem('tgToken') || '';
+const savedChatId = localStorage.getItem('tgChatId') || '';
+if (savedToken) { document.getElementById('tgToken').value = savedToken; showHint('tokenHint', savedToken, 'token'); }
+if (savedChatId) { document.getElementById('tgChatId').value = savedChatId; showHint('chatHint', savedChatId, 'chatid'); }
+
 renderGames();
+updateNotifStatus();
 setInterval(updateCountdowns, 1000);
 updateCountdowns();
 </script>
