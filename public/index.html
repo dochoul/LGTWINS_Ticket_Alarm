@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LG 트윈스 티켓 오픈 알리미</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --lg-red: #C8102E; --radius: 12px; --radius-sm: 8px; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    padding: 24px 16px;
+    color: #1a1a1a;
+  }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  .header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .lg-badge {
+    background: var(--lg-red); color: #fff;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 24px; padding: 6px 14px;
+    border-radius: 6px; letter-spacing: -1px;
+  }
+  .header-text h1 { font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .header-text p { font-size: 12px; color: #666; margin-top: 2px; }
+
+  .games-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .game-card { background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid #e8e8e8; }
+  .card-top { display: flex; align-items: stretch; }
+  .date-block {
+    background: var(--lg-red); color: #fff;
+    padding: 14px 16px; min-width: 72px;
+    text-align: center; flex-shrink: 0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .date-block .day { font-size: 24px; font-weight: 700; line-height: 1; }
+  .date-block .dow { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+  .date-block .time { font-size: 11px; opacity: 0.85; margin-top: 1px; }
+  .match-info { flex: 1; padding: 12px 14px; }
+  .teams { font-size: 14px; font-weight: 500; }
+  .venue { font-size: 12px; color: #888; margin-top: 2px; }
+  .open-info {
+    padding: 12px 14px; border-left: 1px solid #f0f0f0;
+    text-align: right; flex-shrink: 0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .open-label { font-size: 10px; color: #999; }
+  .open-date { font-size: 13px; font-weight: 500; margin-top: 2px; }
+  .countdown-bar {
+    border-top: 1px solid #f0f0f0; padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .countdown-label { font-size: 11px; color: #999; }
+  .countdown-time { font-size: 15px; font-weight: 700; color: var(--lg-red); letter-spacing: 0.5px; }
+  .countdown-time.open { color: #1a7a3c; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .countdown-time.soon { animation: pulse 1s infinite; }
+
+  .ticket-link {
+    font-size: 12px; font-weight: 500;
+    background: var(--lg-red); color: #fff;
+    padding: 6px 14px; border-radius: 20px;
+    text-decoration: none; white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .ticket-link:hover { opacity: 0.85; }
+
+  .section {
+    background: #fff; border-radius: var(--radius);
+    padding: 16px; margin-bottom: 12px;
+    border: 1px solid #e8e8e8;
+  }
+  .section h2 { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+
+  .info-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: #888; }
+  .info-value { font-weight: 500; }
+  .badge {
+    font-size: 11px; padding: 3px 10px;
+    border-radius: 20px; font-weight: 500;
+  }
+  .badge-green { background: #eaf6ee; color: #1a6e35; }
+  .badge-gray { background: #f0f0f0; color: #888; }
+
+  .hint-box {
+    background: #fafafa; border-radius: var(--radius-sm);
+    padding: 12px; font-size: 12px; color: #666;
+    line-height: 1.8; border: 1px solid #f0f0f0; margin-top: 12px;
+  }
+  .hint-box strong { color: #1a1a1a; }
+  .hint-box code {
+    background: #f0f0f0; padding: 1px 5px;
+    border-radius: 4px; font-size: 11px;
+    font-family: monospace;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="lg-badge">LG</div>
+    <div class="header-text">
+      <h1>TWINS 티켓 오픈 알리미</h1>
+      <p>판매 시작 10분 전 텔레그램 자동 알림</p>
+    </div>
+  </div>
+
+  <div class="games-list" id="gamesList"></div>
+
+  <div class="section">
+    <h2>서버 알림 상태</h2>
+    <div class="info-row">
+      <span class="info-label">알림 방식</span>
+      <span class="badge badge-green">Vercel 서버리스 크론잡</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">실행 주기</span>
+      <span class="info-value">매분 자동 체크</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">알림 시점</span>
+      <span class="info-value">오픈 10분 전</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">브라우저 필요 여부</span>
+      <span class="badge badge-green">불필요</span>
+    </div>
+
+    <div class="hint-box">
+      <strong>환경변수 설정 필요 (Vercel Dashboard)</strong><br>
+      <code>TELEGRAM_TOKEN</code> — 봇 토큰<br>
+      <code>TELEGRAM_CHAT_ID</code> — Chat ID (<code>1858148024</code>)<br>
+      <code>CRON_SECRET</code> — 아무 랜덤 문자열 (보안용)
+    </div>
+  </div>
+
+</div>
+
+<script>
+const games = [
+  { day: '10', dow: '금', time: '18:30', away: 'SSG 랜더스', openAt: '2026-04-03T11:00:00+09:00', openLabel: '04/03 11:00' },
+  { day: '11', dow: '토', time: '17:00', away: 'SSG 랜더스', openAt: '2026-04-04T11:00:00+09:00', openLabel: '04/04 11:00' },
+  { day: '12', dow: '일', time: '14:00', away: 'SSG 랜더스', openAt: '2026-04-05T11:00:00+09:00', openLabel: '04/05 11:00' },
+];
+
+function fmtCountdown(ms) {
+  if (ms <= 0) return '판매 중!';
+  const s = Math.floor(ms / 1000);
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (d > 0) return d + '일 ' + h + '시간 ' + m + '분';
+  if (h > 0) return h + '시간 ' + m + '분 ' + sec + '초';
+  return m + '분 ' + sec + '초';
+}
+
+function renderGames() {
+  const list = document.getElementById('gamesList');
+  games.forEach((g, i) => {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="date-block">
+          <div class="day">${g.day}</div>
+          <div class="dow">${g.dow}요일</div>
+          <div class="time">${g.time}</div>
+        </div>
+        <div class="match-info">
+          <div class="teams">${g.away} vs LG 트윈스</div>
+          <div class="venue">잠실야구장</div>
+        </div>
+        <div class="open-info">
+          <div class="open-label">판매 오픈</div>
+          <div class="open-date">${g.openLabel}</div>
+        </div>
+      </div>
+      <div class="countdown-bar">
+        <div>
+          <div class="countdown-label">오픈까지</div>
+          <div class="countdown-time" id="cd${i}">계산 중...</div>
+        </div>
+        <a class="ticket-link" href="https://www.ticketlink.co.kr/sports/137/59" target="_blank">티켓 예매</a>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function updateCountdowns() {
+  const now = Date.now();
+  games.forEach((g, i) => {
+    const ms = new Date(g.openAt).getTime() - now;
+    const el = document.getElementById('cd' + i);
+    if (!el) return;
+    el.textContent = fmtCountdown(ms);
+    el.className = 'countdown-time' + (ms <= 0 ? ' open' : ms <= 600000 ? ' soon' : '');
+  });
+}
+
+renderGames();
+setInterval(updateCountdowns, 1000);
+updateCountdowns();
+</script>
+</body>
+</html>

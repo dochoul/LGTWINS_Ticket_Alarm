@@ -1,0 +1,8 @@
+{
+  "name": "lg-twins-ticket-alarm",
+  "version": "1.0.0",
+  "description": "LG 트윈스 티켓 오픈 알리미 - Vercel 서버리스",
+  "engines": {
+    "node": ">=18"
+  }
+}
