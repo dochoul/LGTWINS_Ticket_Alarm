@@ -94,20 +94,21 @@ export default async function handler(req, res) {
   }
 
   const now = new Date();
+  // 한국 시간(KST) 기준으로 오늘 날짜 구하기 (YYYY-MM-DD)
+  const todayStr = new Date(now.getTime() + (9 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const sent = [];
 
   for (const game of GAMES) {
-    const openTime = new Date(game.openAt);
-    const diffMs = openTime - now;
-    const diffMin = diffMs / 1000 / 60;
+    const openDateStr = game.openAt.split('T')[0]; // '2026-03-21'
 
-    // 9분 ~ 11분 사이 (크론이 정확히 10분 전에 안 올 수도 있으므로 범위로 체크)
-    if (diffMin >= 9 && diffMin <= 11) {
+    // 오늘 오픈되는 티켓인지 확인
+    if (openDateStr === todayStr) {
       const msg =
-        `⚾ LG 트윈스 티켓 오픈 10분 전!\n\n` +
-        `📅 ${game.label}\n` +
-        `🏟 잠실야구장\n` +
-        `🎫 티켓 오픈: ${game.openAt.slice(5, 10).replace('-', '/')} 11:00\n\n` +
+        `⚾ LG 트윈스 홈 경기 티켓 오픈 안내\n\n` +
+        `📅 경기: ${game.label}\n` +
+        `🏟 장소: 잠실야구장\n` +
+        `🎫 오픈 시간: 오늘(11:00)\n\n` +
+        `잠시 후 11시에 티켓팅이 시작됩니다!\n` +
         `👉 https://www.ticketlink.co.kr/sports/137/59`;
 
       const result = await sendTelegram(token, chatId, msg);

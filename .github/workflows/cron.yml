@@ -1,0 +1,16 @@
+name: LG Twins Ticket Alarm Cron
+
+on:
+  schedule:
+    # 매일 한국 시간 오전 10시 (UTC 01:00)
+    - cron: '0 1 * * *'
+  workflow_dispatch: # 수동 실행 지원
+
+jobs:
+  run-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Alarm API
+        run: |
+          curl -X GET "https://lgtwins-ticket-alarm.vercel.app/api/cron" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
