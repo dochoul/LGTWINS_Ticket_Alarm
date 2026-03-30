@@ -109,7 +109,7 @@ export default async function handler(req, res) {
         `🏟 장소: 잠실야구장\n` +
         `🎫 오픈 시간: 오늘(11:00)\n\n` +
         `잠시 후 11시에 티켓팅이 시작됩니다!\n` +
-        `👉 https://facility.ticketlink.co.kr/reserve/product/61881/schedule/sports?teamId=59&menuIndex=reserve`;
+        `👉 https://www.ticketlink.co.kr/sports/137/59`;
 
       const result = await sendTelegram(token, chatId, msg);
       sent.push({ game: game.label, ok: result.ok });
